@@ -142,6 +142,8 @@ if __name__ == "__main__":
         xml_filename =  gym_quadruped_path + '/robot_model/go1/go1.xml'
     elif(cfg.robot == 'aliengo'):
         xml_filename = gym_quadruped_path + '/robot_model/aliengo/aliengo.xml'
+    elif(cfg.robot == 'a1'):
+        xml_filename = gym_quadruped_path + '/robot_model/a1/a1.xml'
     elif(cfg.robot == 'hyqreal'):
         xml_filename =  gym_quadruped_path + '/robot_model/hyqreal/hyqreal.xml'
     elif(cfg.robot == 'mini_cheetah'):

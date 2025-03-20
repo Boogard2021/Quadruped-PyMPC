@@ -46,6 +46,9 @@ class InverseKinematicsNumeric:
         elif(config.robot == 'aliengo'):
             urdf_filename = gym_quadruped_path + '/robot_model/aliengo/aliengo.urdf'
             xml_filename = gym_quadruped_path + '/robot_model/aliengo/aliengo.xml'
+        elif(config.robot == 'a1'):
+            urdf_filename = gym_quadruped_path + '/robot_model/a1/a1.urdf'
+            xml_filename = gym_quadruped_path + '/robot_model/a1/a1.xml'
         elif(config.robot == 'b2'):
             urdf_filename = gym_quadruped_path + '/robot_model/b2/b2.urdf'
             xml_filename = gym_quadruped_path + '/robot_model/b2/b2.xml'
@@ -188,6 +191,9 @@ if __name__ == "__main__":
     elif(config.robot == 'aliengo'):
         urdf_filename = dir_path + '/../../gym-quadruped/gym_quadruped/robot_model/aliengo/aliengo.urdf'
         xml_filename = dir_path + '/../../gym-quadruped/gym_quadruped/robot_model/aliengo/aliengo.xml'
+    elif(config.robot == 'a1'):
+        urdf_filename = dir_path + '/../../gym-quadruped/gym_quadruped/robot_model/a1/a1.urdf'
+        xml_filename = dir_path + '/../../gym-quadruped/gym_quadruped/robot_model/a1/a1.xml'
     elif(config.robot == 'hyqreal'):
         urdf_filename = dir_path + '/../../../gym-quadruped/gym_quadruped/robot_model/hyqreal/hyqreal.urdf'
         xml_filename = dir_path + '/../../../gym-quadruped/gym_quadruped/robot_model/hyqreal/hyqreal.xml'

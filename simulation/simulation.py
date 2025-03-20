@@ -29,7 +29,7 @@ if(cfg.simulation_params['visual_foothold_adaptation'] != 'blind'):
 
 
 
-def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0, base_vel_command_type="human" ,render=True):
+def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0, base_vel_command_type="forward" ,render=True):
     
     np.set_printoptions(precision=3, suppress=True)
     np.random.seed(seed_number) 
@@ -99,9 +99,9 @@ def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0,
         resolution_vfa = 0.04
         dimension_vfa = 7
         heightmaps = LegsAttr(FL=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData),
-                        FR=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData),
-                        RL=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData),
-                        RR=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData))
+                              FR=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData),
+                              RL=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData),
+                              RR=HeightMap(n=dimension_vfa, dist_x=resolution_vfa, dist_y=resolution_vfa, mj_model=env.mjModel, mj_data=env.mjData))
     else:
         heightmaps = None
 
@@ -121,7 +121,7 @@ def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0,
     # --------------------------------------------------------------
     RENDER_FREQ = 30  # Hz
     N_EPISODES = num_episodes
-    N_STEPS_PER_EPISODE = 2000 if env.base_vel_command_type != "human" else 20000
+    N_STEPS_PER_EPISODE = 2000 if env.base_vel_command_type != "forward" else 20000   #"human"
     last_render_time = time.time()
 
     state_obs_history, ctrl_state_history = [], []

@@ -6,7 +6,7 @@ from quadruped_pympc.helpers.quadruped_utils import GaitType
 
 # These are used both for a real experiment and a simulation -----------
 # These are the only attributes needed per quadruped, the rest can be computed automatically ----------------------
-robot = 'aliengo'  # 'go1', 'go2', 'b2', 'aliengo', 'hyqreal', 'mini_cheetah'  # TODO: Load from robot_descriptions.py
+robot = 'go1'  # 'go1', 'go2', 'b2', 'aliengo', 'hyqreal', 'mini_cheetah'  # TODO: Load from robot_descriptions.py
 robot_leg_joints = dict(FL=['FL_hip_joint', 'FL_thigh_joint', 'FL_calf_joint',],  # TODO: Make configs per robot.
                         FR=['FR_hip_joint', 'FR_thigh_joint', 'FR_calf_joint',],
                         RL=['RL_hip_joint', 'RL_thigh_joint', 'RL_calf_joint',],
@@ -40,6 +40,15 @@ elif (robot == 'aliengo'):
 
     urdf_filename = "aliengo.urdf"
     hip_height = 0.35
+
+elif (robot == 'a1'):
+    mass = 12.0
+    inertia = np.array([[1.58460467e-01, 1.21660000e-04, -1.55444692e-02],
+                        [1.21660000e-04, 4.68645637e-01, -3.12000000e-05],
+                        [-1.55444692e-02, -3.12000000e-05, 5.24474661e-01]])
+
+    urdf_filename = "a1.urdf"
+    hip_height = 0.27    
 
 elif (robot == 'b2'):
     mass = 83.49
@@ -77,7 +86,7 @@ mpc_params = {
     # 'collaborative' optimized directly the GRF and has a passive arm model inside
     # 'lyapunov' optimized directly the GRF and has a Lyapunov-based stability constraint
     # 'kynodynamic' sbrd with joints - experimental
-    'type':                                    'nominal',
+    'type':                                    'sampling',
 
     # print the mpc info
     'verbose':                                 False,
@@ -100,7 +109,7 @@ mpc_params = {
     # if this is true, we optimize the step frequency as well
     # for the sampling controller, this is done in the rollout
     # for the gradient-based controller, this is done with a batched version of the ocp
-    'optimize_step_freq':                      False,
+    'optimize_step_freq':                      True,
     'step_freq_available':                     [1.4, 2.0, 2.4],
 
     # ----- START properties only for the gradient-based mpc -----
@@ -176,7 +185,7 @@ mpc_params = {
     # ----- START properties only for the sampling-based mpc -----
 
     # this is used only in the case 'sampling'.
-    'sampling_method':                         'random_sampling',  # 'random_sampling', 'mppi', 'cem_mppi'
+    'sampling_method':                         'mppi',  # 'random_sampling', 'mppi', 'cem_mppi'
     'control_parametrization':                 'cubic_spline_1',
     # 'cubic_spline_1', 'cubic_spline_2', 'linear_spline_1', 'linear_spline_2', 'zero_order'
     'num_parallel_computations':               10000,  # More is better, but slower computation!
@@ -217,9 +226,8 @@ simulation_params = {
 
     # velocity mode: human will give you the possibility to use the keyboard, the other are
     # forward only random linear-velocity, random will give you random linear-velocity and yaw-velocity
-    'mode':                        'human',  # 'human', 'forward', 'random'
-    'ref_z':                       hip_height,
-
+    'mode':                        'forward',  # 'human', 'forward', 'random'
+    'ref_z':                       0.6 * hip_height,
 
     # the MPC will be called every 1/(mpc_frequency*dt) timesteps
     # this helps to evaluate more realistically the performance of the controller
@@ -227,7 +235,7 @@ simulation_params = {
 
     'use_inertia_recomputation':   True,
 
-    'scene':                       'flat',  # flat, rough, stairs, random_boxes, random_pyramids, suspend_stairs, slope, perlin, image
+    'scene':                       'tunnel',  # flat, rough, stairs, random_boxes, random_pyramids, suspend_stairs, slope, perlin, image
 
     }
 # -----------------------------------------------------------------------
