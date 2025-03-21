@@ -16,8 +16,13 @@ from quadruped_pympc import config as cfg
 
 # Helper functions for plotting
 from quadruped_pympc.helpers.quadruped_utils import plot_swing_mujoco
+from quadruped_pympc.helpers.tasks import get_task
 from gym_quadruped.utils.mujoco.visual import render_vector
 from gym_quadruped.utils.mujoco.visual import render_sphere
+
+import argparse
+import mujoco_viewer
+
 
 # PyMPC controller imports
 from quadruped_pympc.quadruped_pympc_wrapper import QuadrupedPyMPC_Wrapper
@@ -26,10 +31,14 @@ from quadruped_pympc.quadruped_pympc_wrapper import QuadrupedPyMPC_Wrapper
 if(cfg.simulation_params['visual_foothold_adaptation'] != 'blind'):
     from gym_quadruped.sensors.heightmap import HeightMap
 
+# viewer
+if viewer:
+   self.viewer = mujoco_viewer.MujocoViewer(self.model, self.data, hide_menus=True)
+else:
+   self.viewer = None
 
 
-
-def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0, base_vel_command_type="forward" ,render=True):
+def run_simulation(task, process=0, num_episodes=500, return_dict=None, seed_number=0, base_vel_command_type="forward" ,render=True):
     
     np.set_printoptions(precision=3, suppress=True)
     np.random.seed(seed_number) 
@@ -72,6 +81,7 @@ def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0,
 
 
     # Initialization of variables used in the main control loop --------------------------------
+    task_data = get_task(task)
 
     # Jacobian matrices
     jac_feet_prev = LegsAttr(*[np.zeros((3, env.mjModel.nv)) for _ in range(4)])
@@ -204,7 +214,21 @@ def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0,
 
             state, reward, is_terminated, is_truncated, info = env.step(action=action)
 
-
+            if self.viewer is not None and self.viewer.is_alive:
+                self.viewer.add_marker(
+                    pos=self.agent.body_ref[:3]*1,         # Position of the marker
+                    size=[0.15, 0.15, 0.15],     # Size of the sphere
+                    rgba=[1, 0, 1, 1],           # Color of the sphere (red)
+                    type=mujoco.mjtGeom.mjGEOM_SPHERE, # Specify that this is a sphere
+                    label=""
+                )
+                            
+                self.viewer.render()
+                if self.save_frames:
+                    self.capture_frame()
+            else:
+                pass
+        
             # Store the history of observations and control -------------------------------------------------------
             ep_state_obs_history.append(state)
             base_lin_vel_err = ref_base_lin_vel - base_lin_vel
@@ -288,5 +312,6 @@ def run_simulation(process=0, num_episodes=500, return_dict=None, seed_number=0,
 
 
 if __name__ == '__main__':
-    run_simulation()
+    # Run main with the provided task
+    run_simulation(cfg.task)
     #run_simulation(num_episodes=1, render=False)

@@ -13,7 +13,7 @@ robot_leg_joints = dict(FL=['FL_hip_joint', 'FL_thigh_joint', 'FL_calf_joint',],
                         RR=['RR_hip_joint', 'RR_thigh_joint', 'RR_calf_joint',])
 robot_feet_geom_names = dict(FL='FL', FR='FR', RL='RL', RR='RR')
 qpos0_js = None  # Zero joint-space configuration. If None it will be extracted from the URDF.
-
+task =  'walk_straight'   #['stairs', 'walk_octagon', 'walk_straight', 'big_box','passing_tunnel']  #,'push_box'
 # ----------------------------------------------------------------------------------------------------------------
 if (robot == 'go1'):
     mass = 12.019
@@ -235,7 +235,7 @@ simulation_params = {
 
     'use_inertia_recomputation':   True,
 
-    'scene':                       'tunnel',  # flat, rough, stairs, random_boxes, random_pyramids, suspend_stairs, slope, perlin, image
+    'scene':                       'flat',  # flat, rough, stairs, random_boxes, random_pyramids, suspend_stairs, slope, perlin, image
 
     }
 # -----------------------------------------------------------------------
